@@ -202,6 +202,33 @@
     background-color: var(--esd-bg);
 }
 
+.esd-control-button-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    inline-size: 26px;
+    block-size: 22px;
+    padding: 0;
+}
+
+.esd-control-button-play {
+    inline-size: 34px;
+    block-size: 26px;
+}
+
+.esd-icon {
+    display: block;
+    inline-size: 10px;
+    block-size: 10px;
+    fill: currentColor;
+}
+
+.esd-icon-lg {
+    inline-size: 14px;
+    block-size: 14px;
+}
+
 .esd-position {
     margin-inline-start: 4px;
     font-family: var(--esd-mono);

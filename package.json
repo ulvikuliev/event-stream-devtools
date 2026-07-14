@@ -1,6 +1,6 @@
 {
     "name": "@ulvikuliev/sse-websocket-time-travel",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Time-travel debugger for SSE and WebSocket streams: record events, rewind app state to any moment, replay at original speed, pop out into a PiP window",
     "license": "MIT",
     "type": "module",

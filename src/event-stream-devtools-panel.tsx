@@ -35,6 +35,42 @@ const copyStylesTo = (target: Document) => {
     });
 };
 
+const IconSkipStart = () => (
+    <svg viewBox="0 0 12 12" className="esd-icon" aria-hidden>
+        <path d="M2 1.5h1.5v9H2z M10.5 1.5 4.5 6l6 4.5z" />
+    </svg>
+);
+
+const IconStepBack = () => (
+    <svg viewBox="0 0 12 12" className="esd-icon" aria-hidden>
+        <path d="M9.5 1.5 3.5 6l6 4.5z" />
+    </svg>
+);
+
+const IconPlay = () => (
+    <svg viewBox="0 0 12 12" className="esd-icon esd-icon-lg" aria-hidden>
+        <path d="M2.5 1 11 6l-8.5 5z" />
+    </svg>
+);
+
+const IconPause = () => (
+    <svg viewBox="0 0 12 12" className="esd-icon esd-icon-lg" aria-hidden>
+        <path d="M2.5 1.5H5v9H2.5z M7 1.5h2.5v9H7z" />
+    </svg>
+);
+
+const IconStepForward = () => (
+    <svg viewBox="0 0 12 12" className="esd-icon" aria-hidden>
+        <path d="M2.5 1.5 8.5 6l-6 4.5z" />
+    </svg>
+);
+
+const IconSkipEnd = () => (
+    <svg viewBox="0 0 12 12" className="esd-icon" aria-hidden>
+        <path d="M1.5 1.5 7.5 6l-6 4.5z M8.5 1.5H10v9H8.5z" />
+    </svg>
+);
+
 const formatEventTime = (timestampMs: number) => {
     const date = new Date(timestampMs);
     const hours = String(date.getHours()).padStart(2, '0');
@@ -432,49 +468,49 @@ export const EventStreamDevtoolsPanel = <TEvent, TState>({
             <div className="esd-controls">
                 <button
                     type="button"
-                    className="esd-control-button"
+                    className="esd-control-button esd-control-button-icon"
                     title="First event"
                     onClick={jumpToFirst}
                     disabled={visibleRows.length === 0}
                 >
-                    ⏮
+                    <IconSkipStart />
                 </button>
                 <button
                     type="button"
-                    className="esd-control-button"
+                    className="esd-control-button esd-control-button-icon"
                     title="Step back (←)"
                     onClick={stepBack}
                     disabled={visibleRows.length === 0}
                 >
-                    ◁
+                    <IconStepBack />
                 </button>
                 <button
                     type="button"
-                    className="esd-control-button"
+                    className="esd-control-button esd-control-button-icon esd-control-button-play"
                     title={isPlaying ? 'Pause simulation' : 'Replay stream from this event (original timing)'}
                     data-testid={`${dataTestId}-play`}
                     onClick={togglePlayback}
                     disabled={!isPlaying && (isLive || selectedIndex >= lastIndex)}
                 >
-                    {isPlaying ? '⏸' : '▶'}
+                    {isPlaying ? <IconPause /> : <IconPlay />}
                 </button>
                 <button
                     type="button"
-                    className="esd-control-button"
+                    className="esd-control-button esd-control-button-icon"
                     title="Step forward (→)"
                     onClick={stepForward}
                     disabled={visibleRows.length === 0}
                 >
-                    ▷
+                    <IconStepForward />
                 </button>
                 <button
                     type="button"
-                    className="esd-control-button"
+                    className="esd-control-button esd-control-button-icon"
                     title="Last event"
                     onClick={jumpToLast}
                     disabled={visibleRows.length === 0}
                 >
-                    ⏭
+                    <IconSkipEnd />
                 </button>
                 {isLive ? (
                     <button
