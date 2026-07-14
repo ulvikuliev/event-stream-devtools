@@ -1,10 +1,31 @@
-# @ulvikuliev/sse-websocket-time-travel
+# sse-websocket-time-travel
 
-Time-travel devtools panel for event streams (SSE, WebSocket, anything push-based). Records incoming events and lets you scrub the application state to any recorded moment, replay the stream at its original speed, filter and inspect events, export the recording, drag/resize the panel or pop it out into a chromeless picture-in-picture window (Chrome 116+).
+Time-travel debugger for SSE and WebSocket streams. Records every incoming event and lets you rewind your application state to any recorded moment, step through events one by one, or replay the whole stream at its original pace.
 
-The library is state-agnostic: you provide a pure reducer that folds events into your state, and you decide how the replayed state substitutes the live one. Replay never mixes stream sessions — events are folded per `groupId` (a calculation id, run id, request id…).
+Browser devtools already show you raw frames. What they don't show is what those frames *did* to your app. This panel closes that gap: you plug in a pure reducer that folds events into state, and the panel drives a cursor through the recording — your UI re-renders exactly as it looked after event #N.
 
-## Usage
+Built for debugging a production SSE pipeline (progressive risk-score graphs in an AML platform), then extracted because nothing about it was domain-specific.
+
+## Features
+
+- **Recording** — every event is captured with a timestamp and a session id (`groupId`); replay never mixes sessions. Ring buffer, 20k events by default.
+- **Time travel** — pause, scrub with a slider, click any row, step with `←`/`→`. The store hands you the folded state at the cursor; how to substitute it for your live state is up to you (usually a couple of lines).
+- **Original-speed replay** — `▶` re-plays the recording from the cursor keeping the real inter-event delays, so races, pacing and animations reproduce as they happened. Any manual seek pauses the simulation.
+- **Inspection** — virtualized event list, per-type filter chips with counts, JSON detail pane, copy, export of the whole recording to JSON.
+- **Panel UX** — drag by the header, resize by the corner grip, collapse to a pill, or pop the panel out into a real chromeless always-on-top window (Document Picture-in-Picture, Chrome 116+).
+- **No runtime dependencies** — `react` / `react-dom` peers only. Styling is a single CSS file on `--esd-*` custom properties.
+
+## Install
+
+Not on npm yet — install straight from GitHub (a built `dist/` is committed):
+
+```bash
+yarn add github:ulvikuliev/sse-websocket-time-travel#v0.1.0
+# or
+npm i github:ulvikuliev/sse-websocket-time-travel#v0.1.0
+```
+
+## Quick start
 
 ```tsx
 import {
@@ -52,7 +73,26 @@ const MyStreamProvider = () => {
 };
 ```
 
-## Panel props
+The hook returns `null` when `enabled` is false, so gating it behind a feature flag costs nothing in production.
+
+## API
+
+### `useEventStreamDevtools({ enabled, replay, maxEvents? })`
+
+Returns the store (or `null` when disabled):
+
+| Field | Purpose |
+| --- | --- |
+| `events` | The recording: `{ seq, receivedAt, groupId, event }[]` |
+| `cursor` | Index the consumer is rewound to; `null` means live |
+| `replayed` | `{ groupId, state }` folded up to the cursor, `null` when live |
+| `record(groupId, event)` | Call from your stream's `onmessage` |
+| `setCursor(index \| null)` | Programmatic seek / back to live |
+| `clear()` | Drop the recording |
+
+`replayEvents(events, cursor, reducer)` is exported separately if you want the fold without React.
+
+### `<EventStreamDevtoolsPanel />`
 
 | Prop | Purpose |
 | --- | --- |
@@ -74,11 +114,15 @@ All colors and fonts are CSS custom properties (`--esd-*`) declared on `.esd-pan
 
 ## Keyboard
 
-With focus inside the panel: `←`/`↑` step back, `→`/`↓` step forward. `▶` replays the recording from the cursor with original inter-event delays; any manual seek pauses the simulation.
+With focus inside the panel: `←`/`↑` step back, `→`/`↓` step forward. Steps walk the filtered list, and any manual seek pauses a running replay.
 
-## Build
+## Development
 
 ```bash
 npm install
 npm run build   # tsc → dist/ + styles.css
 ```
+
+## License
+
+MIT
