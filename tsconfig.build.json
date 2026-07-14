@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "es2022",
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "jsx": "react-jsx",
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "declaration": true,
+        "sourceMap": false,
+        "skipLibCheck": true,
+        "outDir": "dist",
+        "rootDir": "src"
+    },
+    "include": [
+        "src"
+    ]
+}

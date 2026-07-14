@@ -1,0 +1,53 @@
+{
+    "name": "@ulvikuliev/sse-websocket-time-travel",
+    "version": "0.1.0",
+    "description": "Time-travel devtools for SSE and WebSocket event streams: recording, scrubbing, original-speed replay, filters, JSON export, drag/resize and a chromeless picture-in-picture window",
+    "license": "MIT",
+    "type": "module",
+    "sideEffects": [
+        "*.css"
+    ],
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "./styles.css": "./dist/styles.css"
+    },
+    "files": [
+        "dist",
+        "src",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "build": "tsc -p tsconfig.build.json && cp src/styles.css dist/styles.css",
+        "prepublishOnly": "npm run build"
+    },
+    "peerDependencies": {
+        "react": ">=18",
+        "react-dom": ">=18"
+    },
+    "devDependencies": {
+        "@types/react": "^19.0.0",
+        "@types/react-dom": "^19.0.0",
+        "typescript": "^5.9.0"
+    },
+    "author": "Ulvi Kuliev",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ulvikuliev/sse-websocket-time-travel.git"
+    },
+    "keywords": [
+        "sse",
+        "websocket",
+        "time-travel",
+        "devtools",
+        "debugger",
+        "replay",
+        "event-stream",
+        "react"
+    ]
+}
